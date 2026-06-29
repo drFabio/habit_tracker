@@ -2,6 +2,9 @@ export const timerMode = ['COUNT_UP', 'COUNT_DOWN'] as const
 
 export type TimerMode = typeof timerMode[number]
 
+type CommonProps = {
+    autoStart?: boolean
+}
 type TimerUp = {
     mode?: 'COUNT_UP'
     amountInSeconds?: never
@@ -12,4 +15,4 @@ type TimerDown = {
     amountInSeconds: number
 }
 
-export type TimerProps = TimerUp | TimerDown
+export type TimerProps = CommonProps & (TimerUp | TimerDown)
