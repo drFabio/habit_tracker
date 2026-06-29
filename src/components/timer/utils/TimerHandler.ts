@@ -1,17 +1,27 @@
+import { type TimerState } from "../types"
+
 export class TimerHandler {
     private _startTime: number = 0
     private _registeredEllapsedTime: number = 0
+    private _state: TimerState = 'STOPPED'
     constructor(private readonly _amountInMs?: number | never, private readonly _tickFrequencyInMs?: 500) { }
 
     start() {
         this._startTime = new Date().getTime()
+        this._state = 'STARTED'
     }
     stop() {
         this._startTime = 0
         this._registeredEllapsedTime = 0
+        this._state = 'STOPPED'
     }
     pause() {
         this._registeredEllapsedTime = this.ellapsedTime
+        this._state = 'PAUSED'
+    }
+
+    get state() {
+        return this._state
     }
 
 

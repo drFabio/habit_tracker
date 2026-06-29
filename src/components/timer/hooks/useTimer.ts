@@ -1,6 +1,6 @@
 'use client'
 import { useEffect, useRef, useState } from 'react'
-import { TimerProps } from '../types'
+import { TimerProps, TimerState } from '../types'
 import { TimerHandler } from '../utils/TimerHandler'
 import { formatTime } from '../utils/formatTime'
 
@@ -9,17 +9,20 @@ export type UseTimerProps = TimerProps & {
     onStop?: () => void
 }
 export function useTimer({ mode, amountInSeconds, onStop, autoStart = true }: UseTimerProps) {
-    const [dispalyTime, setDisplayTime] = useState<string>()
+    const [displayTime, setDisplayTime] = useState<string>()
+    const [timerState, setTimerState] = useState<TimerState | undefined>('STOPPED')
     const intervalRef = useRef<number>(0)
     const timerRef = useRef<TimerHandler>(null)
 
     const pause = () => {
         clearInterval(intervalRef.current)
         timerRef.current?.pause()
-
+        setTimerState(timerRef.current?.state)
     }
     const start = () => {
         timerRef.current?.start()
+        setTimerState(timerRef.current?.state)
+
         const interval = window.setInterval(() => {
             if (!timerRef.current) {
                 throw new Error('Timer nto')
@@ -41,6 +44,8 @@ export function useTimer({ mode, amountInSeconds, onStop, autoStart = true }: Us
         clearInterval(intervalRef.current)
         onStop?.()
         timerRef.current?.stop()
+        setTimerState(timerRef.current?.state)
+
 
     }
 
@@ -61,6 +66,6 @@ export function useTimer({ mode, amountInSeconds, onStop, autoStart = true }: Us
         return () => clearInterval(intervalRef.current)
     }, [intervalRef, timerRef, mode, amountInSeconds, autoStart])
 
-    return { dispalyTime, pause, start, stop }
+    return { displayTime, timerState, pause, start, stop }
 }
 

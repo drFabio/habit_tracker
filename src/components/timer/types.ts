@@ -16,3 +16,5 @@ type TimerDown = {
 }
 
 export type TimerProps = CommonProps & (TimerUp | TimerDown)
+
+export type TimerState = 'STARTED' | 'STOPPED' | 'PAUSED'

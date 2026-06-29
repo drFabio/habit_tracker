@@ -6,6 +6,7 @@ const meta = {
   component: Timer,
   args: {
     mode: 'COUNT_UP',
+    autoStart: false
   },
   argTypes: {
     mode: {
@@ -15,6 +16,9 @@ const meta = {
     amountInSeconds: {
       control: { type: 'number', min: 1 },
       if: { arg: 'mode', eq: 'COUNT_DOWN' },
+    },
+    autoStart: {
+      control: 'boolean',
     },
   },
 } satisfies Meta<typeof Timer>;
